@@ -1,0 +1,28 @@
+<html>
+<head>
+    <title>$i18n.getText("fleepbot.admin.label")</title>
+    <meta name="decorator" content="atl.admin" />
+    $webResourceManager.requireResource("com.m3clab.fleep-bot-jira-plugin:fleepbot-resources")
+    $webResourceManager.requireResourcesForContext("atl.admin")
+</head>
+<body>
+<img src="images/piflogo.png">
+<form id="admin" class="aui">
+    <div class="field-group">
+        <label for="name">$i18n.getText("fleepbot.admin.login.label")</label>
+        <input type="text" id="login" name="login" class="text" placeholder="email">
+    </div>
+    <div class="field-group">
+        <label for="time">$i18n.getText("fleepbot.admin.password.label")</label>
+        <input type="password" id="password" name="password" class="text">
+    </div>
+    <div class="field-group">
+        <label for="keys">$i18n.getText("fleepbot.admin.keys.label")</label>
+        <input type="text" id="keys" name="keys" class="text" placeholder="TEST|PROD">
+    </div>
+    <div class="field-group">
+        <input type="submit" value="$i18n.getText("fleepbot.admin.save.label")" class="button">
+    </div>
+</form>
+</body>
+</html>

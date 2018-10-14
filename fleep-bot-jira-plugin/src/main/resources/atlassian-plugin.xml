@@ -1,0 +1,43 @@
+<atlassian-plugin key="${atlassian.plugin.key}" name="${project.name}" plugins-version="2">
+	<plugin-info>
+		<description>${project.description}</description>
+		<version>${project.version}</version>
+		<vendor name="${project.organization.name}" url="${project.organization.url}" />
+		<param name="plugin-icon">images/pluginIcon.png</param>
+		<param name="plugin-logo">images/pluginLogo.png</param>
+	</plugin-info>
+
+	<!-- add our i18n resource -->
+	<resource type="i18n" name="i18n" location="fleepbotjira"/>
+    
+	<!-- add our web resources -->
+	<web-resource key="fleepbot-resources" name="fleepbot Web Resources">
+		<dependency>com.atlassian.auiplugin:ajs</dependency>
+        
+		<resource type="download" name="fleepbot.css" location="/css/fleepbot.css"/>
+		<resource type="download" name="fleepbot.js" location="/js/fleepbot.js"/>
+		<resource type="download" name="images/" location="/images"/>
+
+		<context>atl.admin</context>
+	</web-resource>
+	
+	<servlet key="admin-servlet" class="com.m3clab.fleepjira.impl.AdminServlet">
+		<url-pattern>/fleepbot/admin</url-pattern>
+	</servlet>
+
+
+	<rest key="rest" path="/fleepbot-admin" version="1.0">
+		<description>Provides REST resources for the admin UI.</description>
+	</rest>
+
+    <web-section key="pifsection" name="PIF" location="system.admin" weight="1000">
+        <label key="fleepbot.admin.pif" />
+    </web-section>
+
+	<web-item key="fleepbot-menu-item" name="Fleep Bot Admin" section="system.admin/pifsection" weight="10">
+		<description>Link to fleepbot-admin page.</description>
+		<label key="fleepbot.admin.label" />
+		<link linkId="fleepbot-admin-link">/plugins/servlet/fleepbot/admin</link>
+	</web-item>
+	
+</atlassian-plugin>

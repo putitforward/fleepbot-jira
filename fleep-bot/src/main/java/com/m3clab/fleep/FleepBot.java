@@ -9,8 +9,10 @@ import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.client.filter.ClientFilter;
 import com.sun.jersey.api.client.filter.LoggingFilter;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.ws.rs.core.HttpHeaders;
@@ -113,9 +115,12 @@ public class FleepBot {
 				};
 				String room = getConversation(message.get("conversation_id").getTextValue());
 
+				Set<String> matches = new HashSet<String>();
 				Matcher matcher = pattern.matcher(message.get("message").getTextValue());
 				while (matcher.find()) {
-					String match = matcher.group();
+					matches.add(matcher.group());
+				}
+				for (String match : matches) {
 					LOGGER.debug("match: " + match);
 					try {
 						TicketDetails details = null;

@@ -20,7 +20,7 @@ public class JiraDetails implements TicketDetails {
 
 	@Override
 	public String toMessage() {
-		return String.format("%s %s [%s] %s", issue.getKey(), issue.getSummary(), issue.getStatus().getName(), link);
+		return String.format("*%s* %s [%s]\n%s", issue.getKey(), issue.getSummary(), issue.getStatus().getName(), link);
 	}
 
 }

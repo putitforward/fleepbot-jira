@@ -121,7 +121,7 @@ public class FleepBotTest {
 
 						return project + "-XXX " + summary + " " + user.getEmail();
 					} else {
-						return message.toUpperCase() + " summary status";
+						return "*"+message.toUpperCase() + "*\nsummary status";
 					}
 				}
 			};

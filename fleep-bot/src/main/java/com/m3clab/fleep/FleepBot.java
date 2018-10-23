@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.ws.rs.core.HttpHeaders;
@@ -103,7 +104,8 @@ public class FleepBot {
 					&& !accountId.equals(message.get("account_id").getTextValue())
 					&& "text".equals(message.get("mk_message_type").getTextValue())
 					&& !message.get("is_edit").getBooleanValue()
-					&& message.get("pin_weight") == null) {
+					&& message.get("pin_weight") == null
+					&& message.get("tasked_account_id") == null) {
 				LOGGER.debug("message: " + message.toString());
 
 				String user = message.get("account_id").getTextValue();
@@ -157,6 +159,23 @@ public class FleepBot {
 		JsonNode response = post(target
 				.path("conversation/sync/" + conversationId), json);
 		return response.get("header").get("topic").getTextValue();
+	}
+
+	private void sendEvent(TicketDetails details, JsonNode message) {
+		ObjectNode json = getNode();
+		json.put("api_version", 4);
+		ArrayNode streams = getNodeFactory().arrayNode();
+		json.put("stream", streams);
+		ObjectNode stream = getNode();
+		streams.add(stream);
+		stream.put("client_req_id", UUID.randomUUID().toString());
+		stream.put("mk_event_type", "urn:fleep:client:message:add_plain");
+		ObjectNode params = getNode();
+		stream.put("params", params);
+		params.put("conversation_id", message.get("conversation_id").getTextValue());
+		params.put("message", details.toMessage());
+		JsonNode response = post(target
+				.path("event/store"), json);
 	}
 
 	private void send(TicketDetails details, JsonNode message) {
@@ -216,10 +235,14 @@ public class FleepBot {
 	}
 
 	private ObjectNode getNode() {
+		return getNodeFactory().objectNode();
+	}
+
+	private JsonNodeFactory getNodeFactory() {
 		if (nodeFactory == null) {
 			nodeFactory = new ObjectMapper().getNodeFactory();
 		}
-		return nodeFactory.objectNode();
+		return nodeFactory;
 	}
 
 	private int initEventHorizon() {
